@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'digital-7';
+  src: url('../../../public/digital_7/digital-7.ttf');
+}
+.font_digital7{
+  font-family: digital-7;
+  color: red;
+}
+.font_arial{
+  font-family:Arial, Helvetica, sans-serif;
+}
+.mine_bg{
+  background-image: url('/public/image/windows_XP.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+ }
