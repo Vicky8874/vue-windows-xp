@@ -21,6 +21,7 @@
     }
   }
   .mine_footer_start{
+    color: white;
     font-size: 14px;
     font-style: italic;
     text-shadow: 1px 1px 1px #666;
@@ -45,8 +46,8 @@
       <img class="w-[20px]" src="/image/start.png"/>
       <div class="font_arial mine_footer_start">開始</div>
     </div>
-    <div v-for="(item,index) in app" :key="index">
-      <appDrawer v-if="item.display" :name="item.name" :img="item.img" />
+    <div v-for="(item,index) in storeTaskbarApp" :key="index">
+      <appDrawer :name="item.name" :img="item.img" />
     </div>
     <div class="mine_footer_right font_arial">
       <img class="w-[20px] mr-[10px] cursor-pointer" src="/image/windows_xp_icon/shield.png" />
@@ -58,5 +59,6 @@
 <script setup>
   import appDrawer from './appDrawer.vue'
   import dayjs from 'dayjs'
-  import {app} from '@/configs/index.js'
+  import { useCounterStore } from '@/store/index.js'
+  const {storeTaskbarApp} = useCounterStore()
 </script>
