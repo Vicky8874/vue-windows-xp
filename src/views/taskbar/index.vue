@@ -47,7 +47,7 @@
       <div class="font_arial mine_footer_start">開始</div>
     </div>
     <div v-for="(item,index) in storeTaskbarApp" :key="index">
-      <appDrawer :name="item.name" :img="item.img" />
+      <appDrawer :name="item.name" :img="item.img" @click="sortIndex(item.id)" />
     </div>
     <div class="mine_footer_right font_arial">
       <img class="w-[20px] mr-[10px] cursor-pointer" src="/image/windows_xp_icon/shield.png" />
@@ -60,5 +60,5 @@
   import appDrawer from './appDrawer.vue'
   import dayjs from 'dayjs'
   import { useCounterStore } from '@/store/index.js'
-  const {storeTaskbarApp} = useCounterStore()
+  const {storeTaskbarApp,sortIndex} = useCounterStore()
 </script>

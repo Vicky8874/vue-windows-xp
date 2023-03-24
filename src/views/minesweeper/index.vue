@@ -131,7 +131,7 @@ export default {
     const mineweeperDisplay=ref(false)
     const statusConsole=['就緒...','遊戲中...','你贏了！','Opps！']
     const gameStatus=['你輸了！','你贏了！']
-    const num=ref(18)
+    const num=ref(12)
     const status=ref(false) //開始狀態
     let box=[] //炸彈位置
     let boomNumAll=[] //炸彈位置

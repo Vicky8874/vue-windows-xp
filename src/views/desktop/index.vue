@@ -13,7 +13,7 @@
       </div>
     </div>
     <div v-for="item in store.storeDesktopApp" :key="item.id">
-      <div :class="item.className" class="absolute" :style="{zIndex:item.zIndex}">
+      <div :class="item.className" class="absolute" :style="{zIndex:item.zIndex}" @click="store.sortIndex(item.id)">
         <component :is="item.component" />
       </div>
     </div>
@@ -28,13 +28,7 @@
   const display=(id,className)=>{
     if(!store.storeTaskbarApp.some(items=>{return items.id===id})) store.storeTaskbarApp.push(app.find(item=>item.id===id))
     if(!store.storeDesktopApp.some(items=>{return items.id===id})) store.storeDesktopApp.push(app.find(item=>item.id===id))
-    let target=store.storeDesktopApp.find(item=>{return item.id===id}).zIndex
-    store.storeDesktopApp.find(item=>{return item.id===id}).zIndex=store.storeDesktopApp.length
-    if(target!==0){
-      for(let i=0;i<store.storeDesktopApp.length;i++){
-        if(store.storeDesktopApp[i].id!==id) store.storeDesktopApp[i].zIndex=store.storeDesktopApp[i].zIndex>=target?store.storeDesktopApp[i].zIndex-1:store.storeDesktopApp[i].zIndex===target?store.storeDesktopApp.length:store.storeDesktopApp[i].zIndex
-      }
-    }
+    store.sortIndex(id)
     nextTick(()=>{
       document.querySelector('.'+className+' .title_bar').onmousedown = function (e1) {
         document.onmousemove = function (e) {
