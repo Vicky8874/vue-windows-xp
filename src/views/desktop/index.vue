@@ -7,13 +7,13 @@
 <template>
   <div class="app m-[10px]" style="width: fit-content;">
     <div v-for="(item,index) of app" :key="index">
-      <div class="w-[48px] mb-[10px] mr-[10px] cursor-pointer" @click="clickCss(index)" @dblclick="display(item.id,item.className,item.zIndex)">
+      <div v-if="item.desktop" class="w-[48px] mb-[10px] mr-[10px] cursor-pointer" @click="clickCss(index)" @dblclick="display(item.id,item.className,item.zIndex)">
         <img class="w-[48px] mb-[4px]" :src="item.img" />
         <div class="app_text font_arial text-white text-center" style="text-shadow: 0.1em 0.1em #333;">{{ item.name }}</div>
       </div>
     </div>
-    <div v-for="item in store.storeDesktopApp" :key="item.id">
-      <div :class="item.className" class="absolute" :style="{zIndex:item.zIndex}" @click="store.sortIndex(item.id)">
+    <div v-for="item of storeDesktopApp" :key="item.id">
+      <div :class="item.className" class="absolute" :style="{zIndex:item?.zIndex}" @click="sortIndex(item.id)">
         <component :is="item.component" />
       </div>
     </div>
@@ -24,11 +24,11 @@
   import {app} from '@/configs/index.js'
   import { useCounterStore } from '@/store/index.js'
   import { nextTick } from 'vue'
-  const store = useCounterStore()
+  const {storeTaskbarApp,storeDesktopApp,sortIndex} = useCounterStore()
   const display=(id,className)=>{
-    if(!store.storeTaskbarApp.some(items=>{return items.id===id})) store.storeTaskbarApp.push(app.find(item=>item.id===id))
-    if(!store.storeDesktopApp.some(items=>{return items.id===id})) store.storeDesktopApp.push(app.find(item=>item.id===id))
-    store.sortIndex(id)
+    if(!storeDesktopApp.some(items=>{return items.id===id})) storeDesktopApp.push(app.find(item=>item.id===id))
+    if(!storeTaskbarApp.some(items=>{return items.id===id})) storeTaskbarApp.push(app.find(item=>item.id===id))
+    sortIndex(id)
     nextTick(()=>{
       document.querySelector('.'+className+' .title_bar').onmousedown = function (e1) {
         document.onmousemove = function (e) {
@@ -51,7 +51,7 @@
   document.addEventListener('click',event=>{
     if(!(document.querySelector('.app')===event.target||document.querySelector('.app').contains(event.target))){
       for(let i=0;i<app.length;i++){
-        document.getElementsByClassName('app_text')[i].classList.remove('click_text')
+        document.getElementsByClassName('app_text')[i]?.classList.remove('click_text')
       }
     }
   })

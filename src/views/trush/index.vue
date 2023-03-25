@@ -45,30 +45,30 @@
   }
 }
 .box_click_bg{
-background-color: #ccc;
-border: 1px solid #999;
-cursor: default;
+  background-color: #ccc;
+  border: 1px solid #999;
+  cursor: default;
 }
 .box_noclick_bg{
-background-color: #ddd;
-border-top: 5px solid #F0F0F0;
-border-left: 5px solid #F0F0F0;
-border-right: 5px solid #9d9d9d;
-border-bottom: 5px solid #9d9d9d;
-cursor: pointer;
-&:hover{
-  background-color: #ccc;
-}
+  background-color: #ddd;
+  border-top: 5px solid #F0F0F0;
+  border-left: 5px solid #F0F0F0;
+  border-right: 5px solid #9d9d9d;
+  border-bottom: 5px solid #9d9d9d;
+  cursor: pointer;
+  &:hover{
+    background-color: #ccc;
+  }
 }
 .box_centerClick_bg{
-background-color: #fff;
+  background-color: #fff;
 cursor: default;
 }
 .box_shadow_up{
-border-top: 5px solid #F0F0F0;
-border-left: 5px solid #F0F0F0;
-border-right: 5px solid #9d9d9d;
-border-bottom: 5px solid #9d9d9d;
+  border-top: 5px solid #F0F0F0;
+  border-left: 5px solid #F0F0F0;
+  border-right: 5px solid #9d9d9d;
+  border-bottom: 5px solid #9d9d9d;
 }
 .box_shadow_up_hover{
 &:hover{
@@ -79,10 +79,10 @@ border-bottom: 5px solid #9d9d9d;
 }
 }
 .box_shadow_down{
-border-top: 5px solid #9d9d9d;
-border-left: 5px solid #9d9d9d;
-border-right: 5px solid #F0F0F0;
-border-bottom: 5px solid #F0F0F0;
+  border-top: 5px solid #9d9d9d;
+  border-left: 5px solid #9d9d9d;
+  border-right: 5px solid #F0F0F0;
+  border-bottom: 5px solid #F0F0F0;
 }
 </style>
 <template>
@@ -90,13 +90,13 @@ border-bottom: 5px solid #F0F0F0;
 <div class="wrap">
   <div class="flex justify-between mx-[4px] mb-[4px] cursor-move">
     <div class="title_bar flex-1 font_arial font-black text-white flex items-center">
-      <img class="w-[24px]" src="/image/windows_desktop/bomb.webp">
-      <span class="ml-[2px] text-[16px]" style="text-shadow: 0.1em 0.1em #333;">踩地雷</span>
+      <img class="w-[24px]" :src="data.img">
+      <span class="ml-[2px] text-[16px]" style="text-shadow: 0.1em 0.1em #333;">{{ data.name }}</span>
     </div>
     <div class="flex font_arial">
       <div class="top_button top_button_blue">_</div>
       <div class="top_button top_button_blue">口</div>
-      <div class="top_button top_button_red">X</div>
+      <div class="top_button top_button_red" @click="close()">X</div>
     </div>
   </div>
   <div class="text-black bg-[#ece9d8] w-full flex pl-[6px] font_arial">
@@ -125,10 +125,12 @@ border-bottom: 5px solid #F0F0F0;
 
 <script>
 import {ref} from 'vue'
-import dayjs from 'dayjs'
+import {app} from '@/configs/index.js'
+import { useCounterStore } from '@/store/index.js'
 export default {
   setup() {
-    const app=[{name:'踩地雷',img:'/image/game_icon/bomb.png'}]
+    const {storeTaskbarApp,storeDesktopApp,deleteIndex} = useCounterStore()
+    const data=app.find(item=>item.id===3)
     const mineweeperDisplay=ref(false)
     const statusConsole=['就緒...','遊戲中...','你贏了！','Opps！']
     const gameStatus=['你輸了！','你贏了！']
@@ -177,7 +179,7 @@ export default {
           boomNumAll[i][j]=boomNumCount(i,j)
         }
       }
-      console.log('boomNumAll',boomNumAll)
+      // console.log('boomNumAll',boomNumAll)
     }
     //結束
     const end=(val)=>{
@@ -185,7 +187,6 @@ export default {
       clearInterval(timer)
       switch(val){
         case 0:
-          console.log(1)
           startButtonFace.value='😵'
           for(let i=0;i<num.value;i++){
             for(let j=0;j<num.value;j++){
@@ -198,8 +199,18 @@ export default {
           }
           break
         case 1:
-          console.log(2)
           startButtonFace.value='😎'
+          for(let i=0;i<num.value;i++){
+            for(let j=0;j<num.value;j++){
+              if(boomNumAll[i][j]>0){
+                document.getElementsByClassName('box')[i*num.value+j].innerHTML=boomNumAll[i][j]
+                document.getElementsByClassName('box')[i*num.value+j].classList.remove("box_noclick_bg")
+                document.getElementsByClassName('box')[i*num.value+j].classList.add("box_click_bg")
+              }
+              else if(boomNumAll[i][j]===-1) document.getElementsByClassName('box')[i*num.value+j].innerHTML='🚩'
+              else console.log(2)
+            }
+          }
           break
       }
       console.log(gameStatus[val])
@@ -231,6 +242,7 @@ export default {
     }
     //左鍵
     const leftMouse=(val)=>{
+      if(!startBool) return
       let row=Math.floor(val/num.value)
       let col=val%num.value
       if(!status.value || clickStatus.value?.[row][col]) return
@@ -239,6 +251,7 @@ export default {
     }
     //右鍵
     const rightMouse=(val)=>{
+      if(!startBool) return
       let row=Math.floor(val/num.value)
       let col=val%num.value
       if(!status.value || clickStatus.value?.[row][col]===1) return
@@ -254,6 +267,7 @@ export default {
     }
     //中鍵
     const centerMouse=(val,bool)=>{
+      if(!startBool) return
       let x=Math.floor(val/num.value)
       let y=val%num.value
       if(clickStatus.value[x][y]!==1 || boomNumAll[x][y]===0) return
@@ -371,6 +385,10 @@ export default {
       }
 
     }
+    const close=()=>{
+      deleteIndex(storeDesktopApp,3,true)
+      deleteIndex(storeTaskbarApp,3,false)
+    }
     return{
       num,
       status,
@@ -381,12 +399,12 @@ export default {
       time,
       statusConsole,
       mineweeperDisplay,
-      app,
+      data,
       //fn
       start,
       mouse,
       mouseDown,
-      dayjs,
+      close,
     }
   },
 }

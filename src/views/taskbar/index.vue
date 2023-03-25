@@ -42,7 +42,7 @@
 </style>
 <template>
   <div class="mine_footer">
-    <div class="mine_footer_start_wrap">
+    <div class="mine_footer_start_wrap" @click="startStatus=!startStatus">
       <img class="w-[20px]" src="/image/start.png"/>
       <div class="font_arial mine_footer_start">開始</div>
     </div>
@@ -53,12 +53,18 @@
       <img class="w-[20px] mr-[10px] cursor-pointer" src="/image/windows_xp_icon/shield.png" />
       <div>{{ dayjs().format('A')==='AM'?'上午':'下午' }} {{ dayjs().format('HH:MM') }}</div>
     </div>
+    <div class="absolute bottom-[33px]">
+      <startWindows v-if="startStatus" />
+    </div>
   </div>
 </template>
 
 <script setup>
   import appDrawer from './appDrawer.vue'
+  import startWindows from './startWindows.vue'
   import dayjs from 'dayjs'
+  import {ref} from 'vue'
   import { useCounterStore } from '@/store/index.js'
   const {storeTaskbarApp,sortIndex} = useCounterStore()
+  const startStatus=ref(false)
 </script>
