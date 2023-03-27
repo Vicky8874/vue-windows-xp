@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .click_text{
   background-color: #005AB5;
   border-radius:2px;

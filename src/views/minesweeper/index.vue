@@ -1,10 +1,11 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .wrap{
   background:radial-gradient(circle closest-side at center,#295dfc,#2554e2);
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  box-shadow: 1px 1px 5px #000;
 }
 .top_button{
   width: 30px;
