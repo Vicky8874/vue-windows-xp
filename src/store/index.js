@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia'
 import {app} from '@/configs/index.js'
+import {nextTick} from 'vue'
   export const useCounterStore = defineStore('counter', {
   state: () => ({
     storeDesktopApp:[],
     storeTaskbarApp:[],
+    startStatus:false,
   }),
   getters: {
     
@@ -26,6 +28,20 @@ import {app} from '@/configs/index.js'
           if(arr[i].zIndex>target.zIndex) arr[i].zIndex=arr[i].zIndex-1
       arr.splice(arr.indexOf(target), 1)
       app.find(item=>item.id===id).zIndex=0
+    },
+    daggle(className){
+      nextTick(()=>{
+        document.querySelector('.'+className+' .title_bar').onmousedown = function (e1) {
+          document.onmousemove = function (e) {
+            document.querySelector('.'+className).style.left = e.clientX - e1.offsetX + "px"
+            document.querySelector('.'+className).style.top = e.clientY - e1.offsetY + "px"
+          }
+          document.onmouseup = function (e) {
+            document.onmousemove = null
+            document.onmouseup = null
+          }
+        }
+      })
     },
   },
 })

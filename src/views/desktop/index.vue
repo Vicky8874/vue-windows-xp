@@ -7,13 +7,13 @@
 <template>
   <div class="app m-[10px]" style="width: fit-content;">
     <div v-for="(item,index) of app" :key="index">
-      <div v-if="item.desktop" class="w-[48px] mb-[10px] mr-[10px] cursor-pointer" @click="clickCss(index)" @dblclick="display(item.id,item.className,item.zIndex)">
-        <img class="w-[48px] mb-[4px]" :src="item.img" />
+      <div v-if="item.desktop" class="flex flex-col items-center w-[66px] mb-[10px] mr-[10px] cursor-pointer" @click="clickCss(index)" @dblclick="display(item.id,item.className)">
+        <img class="w-[50px] mb-[4px]" :src="item.img" />
         <div class="app_text font_arial text-white text-center" style="text-shadow: 0.1em 0.1em #333;">{{ item.name }}</div>
       </div>
     </div>
     <div v-for="item of storeDesktopApp" :key="item.id">
-      <div :class="item.className" class="absolute" :style="{zIndex:item?.zIndex}" @click="sortIndex(item.id)">
+      <div :class="item.className" class="absolute top-1/3 left-1/2" :style="{zIndex:item?.zIndex}" @click="sortIndex(item.id)">
         <component :is="item.component" />
       </div>
     </div>
@@ -23,27 +23,15 @@
 <script setup>
   import {app} from '@/configs/index.js'
   import { useCounterStore } from '@/store/index.js'
-  import { nextTick } from 'vue'
-  const {storeTaskbarApp,storeDesktopApp,sortIndex} = useCounterStore()
+  const {storeTaskbarApp,storeDesktopApp,sortIndex,daggle} = useCounterStore()
   const display=(id,className)=>{
     if(!storeDesktopApp.some(items=>{return items.id===id})) storeDesktopApp.push(app.find(item=>item.id===id))
     if(!storeTaskbarApp.some(items=>{return items.id===id})) storeTaskbarApp.push(app.find(item=>item.id===id))
     sortIndex(id)
-    nextTick(()=>{
-      document.querySelector('.'+className+' .title_bar').onmousedown = function (e1) {
-        document.onmousemove = function (e) {
-          document.querySelector('.'+className).style.left = e.clientX - e1.offsetX + "px"
-          document.querySelector('.'+className).style.top = e.clientY - e1.offsetY + "px"
-        }
-        document.onmouseup = function (e) {
-          document.onmousemove = null
-          document.onmouseup = null
-        }
-      }
-    })
+    daggle(className)
   }
   const clickCss=(val)=>{
-    for(let i=0;i<app.length;i++){
+    for(let i=0;i<app.filter(item=>{return item.desktop}).length;i++){
       if(i===val)document.getElementsByClassName('app_text')[val].classList.add('click_text')
       else document.getElementsByClassName('app_text')[i].classList.remove('click_text')
     }

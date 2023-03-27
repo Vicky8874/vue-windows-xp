@@ -42,7 +42,7 @@
 </style>
 <template>
   <div class="mine_footer">
-    <div class="mine_footer_start_wrap" @click="startStatus=!startStatus">
+    <div class="mine_footer_start_wrap" @click="store.startStatus=!store.startStatus">
       <img class="w-[20px]" src="/image/start.png"/>
       <div class="font_arial mine_footer_start">開始</div>
     </div>
@@ -54,7 +54,7 @@
       <div>{{ dayjs().format('A')==='AM'?'上午':'下午' }} {{ dayjs().format('HH:MM') }}</div>
     </div>
     <div class="absolute bottom-[33px]">
-      <startWindows v-if="startStatus" />
+      <startWindows v-if="startStatusDisplay" />
     </div>
   </div>
 </template>
@@ -63,8 +63,13 @@
   import appDrawer from './appDrawer.vue'
   import startWindows from './startWindows.vue'
   import dayjs from 'dayjs'
-  import {ref} from 'vue'
+  import {computed} from 'vue'
   import { useCounterStore } from '@/store/index.js'
   const {storeTaskbarApp,sortIndex} = useCounterStore()
-  const startStatus=ref(false)
+  const store = useCounterStore()
+  const startStatusDisplay=computed(()=>store.startStatus)
+  document.addEventListener('click',event=>{
+    if(document.querySelector('.mine_bg')===event.target&&document.querySelector('.mine_bg').contains(event.target)) store.startStatus=false
+    if(document.querySelector('.bg')===event.target&&document.querySelector('.bg').contains(event.target)) store.startStatus=false
+  })
 </script>
