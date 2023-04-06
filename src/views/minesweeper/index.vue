@@ -42,7 +42,7 @@
   cursor: pointer;
   font-weight: 500;
   &:hover{
-    background-color: #dbd7c6;
+    background-color: #316ac5;
   }
 }
 .box_click_bg{

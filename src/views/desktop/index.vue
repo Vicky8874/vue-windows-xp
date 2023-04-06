@@ -13,17 +13,22 @@
       </div>
     </div>
     <div v-for="item of storeDesktopApp" :key="item.id">
-      <div :class="item.className" class="absolute top-1/3 left-1/2" :style="{zIndex:item?.zIndex}" @click="sortIndex(item.id)">
+      <div :class="item.className" class="absolute top-1/10 left-1/10" :style="{zIndex:item?.zIndex}" @mousedown="sortIndex(item.id)">
         <component :is="item.component" />
       </div>
     </div>
   </div>
+  <Teleport to="body">
+    <shutDown class="absolute ml-[-200px] mt-[-145px] top-[50%] left-[50%]" v-if="store.shutDownStatus" @close="shutDownDisplayAction()" />
+  </Teleport>
 </template>
 
 <script setup>
   import {app} from '@/configs/index.js'
+  import shutDown from  '@/components/shutDown.vue'
   import { useCounterStore } from '@/store/index.js'
   const {storeTaskbarApp,storeDesktopApp,sortIndex,daggle} = useCounterStore()
+  const store=useCounterStore()
   const display=(id,className)=>{
     if(!storeDesktopApp.some(items=>{return items.id===id})) storeDesktopApp.push(app.find(item=>item.id===id))
     if(!storeTaskbarApp.some(items=>{return items.id===id})) storeTaskbarApp.push(app.find(item=>item.id===id))
@@ -43,4 +48,7 @@
       }
     }
   })
+  const shutDownDisplayAction=()=>{
+    store.shutDownStatus=!store.shutDownStatus
+  }
 </script>

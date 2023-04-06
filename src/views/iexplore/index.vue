@@ -1,10 +1,12 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .wrap{
   background:radial-gradient(circle closest-side at center,#295dfc,#2554e2);
   border-radius: 10px;
   padding: 10px;
   display: flex;
   flex-direction: column;
+  width: 900px;
+  box-shadow: 1px 1px 5px #000;
 }
 .top_button{
   width: 30px;
@@ -32,6 +34,12 @@
     background:linear-gradient(0deg, #8ba9f3, #2159c4);
   }
 }
+.border{
+  border-top: 2px solid #F0F0F0;
+  border-left: 2px solid #F0F0F0;
+  border-right: 2px solid #9d9d9d;
+  border-bottom: 2px solid #9d9d9d;
+}
 .nav{
   font-size: 18px;
   padding: 0 10px;
@@ -41,371 +49,319 @@
   cursor: pointer;
   font-weight: 500;
   &:hover{
-    background-color: #dbd7c6;
+    background-color: #316ac5;
   }
 }
-.box_click_bg{
-  background-color: #ccc;
-  border: 1px solid #999;
-  cursor: default;
-}
-.box_noclick_bg{
-  background-color: #ddd;
-  border-top: 5px solid #F0F0F0;
-  border-left: 5px solid #F0F0F0;
-  border-right: 5px solid #9d9d9d;
-  border-bottom: 5px solid #9d9d9d;
-  cursor: pointer;
-  &:hover{
-    background-color: #ccc;
-  }
-}
-.box_centerClick_bg{
-  background-color: #fff;
-cursor: default;
-}
-.box_shadow_up{
-  border-top: 5px solid #F0F0F0;
-  border-left: 5px solid #F0F0F0;
-  border-right: 5px solid #9d9d9d;
-  border-bottom: 5px solid #9d9d9d;
-}
-.box_shadow_up_hover{
-&:hover{
-  border-top: 5px solid #9d9d9d;
-  border-left: 5px solid #9d9d9d;
-  border-right: 5px solid #F0F0F0;
-  border-bottom: 5px solid #F0F0F0;
-}
-}
-.box_shadow_down{
-  border-top: 5px solid #9d9d9d;
-  border-left: 5px solid #9d9d9d;
-  border-right: 5px solid #F0F0F0;
-  border-bottom: 5px solid #F0F0F0;
+.click_text{
+  background-color: #3670b6;
+  border-radius:2px;
+  border: 1px dotted #000;
+  box-sizing:content-box;
+  color: #fff;
 }
 </style>
 <template>
-<!-- 踩地雷 -->
-<div class="wrap">
+<div class="wrap font_arial">
   <div class="flex justify-between mx-[4px] mb-[4px] cursor-move">
-    <div class="title_bar flex-1 font_arial font-black text-white flex items-center">
+    <div class="title_bar flex-1 font-black text-white flex items-center">
       <img class="w-[24px]" :src="data.img">
       <span class="ml-[2px] text-[16px]" style="text-shadow: 0.1em 0.1em #333;">{{ data.name }}</span>
     </div>
-    <div class="flex font_arial">
+    <div class="flex">
       <div class="top_button top_button_blue">_</div>
       <div class="top_button top_button_blue">口</div>
       <div class="top_button top_button_red" @click="close()">X</div>
     </div>
   </div>
-  <div class="text-black bg-[#ece9d8] w-full flex pl-[6px] font_arial">
-    <div class="nav">遊戲(G)</div>
-    <div class="nav">說明(H)</div>
-  </div>
-  <div class="box_shadow_up flex flex-col items-center bg-[#BEBEBE] p-20px">
-    <div class="box_shadow_down flex justify-around items-center w-full bg-[#BEBEBE]">
-      <!-- <input id="num" class="font_digital7 text-black text-[20px] mr-[20px] text-center pl-[14px]" type="number" min="8" max="50" v-model="num" :disabled="status"/> -->
-      <div class="font_digital7 text-center w-[100px] text-[40px] bg-black">{{ boomNum-boomClickNum }}</div>
-      <div class="start_button text-white box_shadow_up box_shadow_up_hover w-[50px] h-[50px] flex justify-center items-center text-[30px] cursor-pointer" @click="start()">{{ startButtonFace }}</div>
-      <div class="font_digital7 text-center w-[100px] text-[40px] bg-black">{{ time }}</div>
-    </div>
-    <div class="box_shadow_down mt-[50px]">
-      <div class="flex" v-for="i in num">
-        <div class="box bg-[#ddd] text-black w-[40px] h-[40px] flex justify-center items-center" :class="status?'box_noclick_bg':'cursor-not-allowed'" v-for="j in num" @mouseup="(e)=>{mouse(e,(i-1)*num+j)}" @mousedown="(e)=>{mouseDown(e,(i-1)*num+j)}">
+  <div class="border text-black bg-[#ece9d8] flex justify-between">
+    <div class="flex flex-1 border">
+      <div class="nav" @click="file()">檔案(F)</div>
+      <div class="nav" @click="edit()">編輯(E)</div>
+      <div class="nav" @click="veiw()">檢視(V)</div>
+      <div class="nav" @click="favourite()">我的最愛(A)</div>
+      <div class="nav" @click="tool()">工具(T)</div>
+      <div class="nav" @click="help()">說明(H)</div>
+      <!-- 檔案 -->
+      <div v-if="fileDisplay" class="drow w-[180px] bg-white absolute border-1 bordr-[#989791] shadow top-[80px] left-[14px] z-10">
+        <div class="text-[14px] py-[6px] cursor-pointer hover:(bg-[#316ac5] text-white)" v-for="(item,index) in fileContent" :key="index">
+          <span class="pl-[20px] text-[#aca89a]">{{ item }}</span>
         </div>
       </div>
+      <!-- 編輯 -->
+      <div v-if="editDisplay" class="drow w-[180px] bg-white absolute border-1 bordr-[#989791] shadow top-[80px] left-[82px] z-10">
+        <div class="text-[14px] py-[6px] cursor-pointer hover:(bg-[#316ac5] text-white)" v-for="(item,index) in editContent" :key="index">
+          <span class="pl-[20px] text-[#aca89a]">{{ item }}</span>
+        </div>
+      </div>
+      <!-- 檢視 -->
+      <div v-if="veiwDisplay" class="drow w-[180px] bg-white absolute border-1 bordr-[#989791] shadow top-[80px] left-[152px] z-10">
+        <div class="text-[14px] py-[6px] cursor-pointer hover:(bg-[#316ac5] text-white)" v-for="(item,index) in veiwContent" :key="index">
+          <span class="pl-[20px] text-[#aca89a]">{{ item }}</span>
+        </div>
+      </div>
+      <!-- 我的最愛 -->
+      <div v-if="favouriteDisplay" class="drow w-[180px] bg-white absolute border-1 bordr-[#989791] shadow top-[80px] left-[221px] z-10">
+        <div class="text-[14px] py-[6px] cursor-pointer hover:(bg-[#316ac5] text-white)" v-for="(item,index) in favouriteContent" :key="index">
+          <span class="pl-[20px] text-[#aca89a]">{{ item }}</span>
+        </div>
+      </div>
+      <!-- 工具 -->
+      <div v-if="toolDisplay" class="drow w-[180px] bg-white absolute border-1 bordr-[#989791] shadow top-[80px] left-[322px]">
+        <div class="text-[14px] py-[6px] cursor-pointer hover:(bg-[#316ac5] text-white)" v-for="(item,index) in toolContent" :key="index">
+          <span class="pl-[20px] text-[#aca89a]">{{ item }}</span>
+        </div>
+      </div>
+      <!-- 說明 -->
+      <div v-if="helpDisplay" class="drow w-[250px] bg-white absolute border-1 bordr-[#989791] shadow top-[80px] left-[391px]">
+        <div class="text-[14px] py-[6px] cursor-pointer hover:(bg-[#316ac5] text-white)" v-for="(item,index) in helpContent" :key="index" @click="helpAction(item.icon)">
+          <span class="pl-[20px]" :class="item.display?'text-black':'text-[#aca89a]'">{{ item.content }}</span>
+        </div>
+      </div>
+      <!-- <about v-if="" class="absolute z-10 top-1/5 left-1/5" /> -->
+    </div>
+    <div class="border bg-white px-[10px] py-[2px]">
+      <img class="w-[30px]" src="/image/start.png" />
     </div>
   </div>
-  <div class="text-black bg-[#ece9d8] w-full flex font_arial">
-    <div class="nav">{{ statusConsole[0] }}</div>
+  <div class="border bg-[#ece9d8] h-[50px] flex items-center">
+    <img class="rounded-1/2 w-[30px] filter grayscale mx-[10px]" src="/image/windows_xp_icon/back.png" />
+    <span class="text-[16px] text-[#a7a79f] mr-[20px]">上一頁</span>
+    <div class="text-[10px] text-[#a7a79f]">▼</div>
+    <img class="rounded-1/2 w-[30px] filter grayscale mx-[10px]" src="/image/windows_xp_icon/next.png" />
+    <div class="text-[10px] text-[#a7a79f]">▼</div>
+    <div class="flex h-full items-center cursor-pointer hover:(bg-[#dbd7c6])">
+      <img class="w-[30px] mx-[10px]" src="/image/windows_xp_icon/up.png" />
+    </div>
+    <div class="w-[1px] h-[50px] bg-[#9d9d9d]"></div>
+    <div class="flex h-full items-center cursor-pointer hover:(bg-[#dbd7c6])">
+      <img class="w-[30px] mx-[10px]" src="/image/windows_xp_icon/search.png" />
+      <span class="text-[16px] text-black mr-[20px]">搜尋</span>
+    </div>
+    <div class="flex h-full items-center cursor-pointer hover:(bg-[#dbd7c6])">
+      <img class="w-[30px] mx-[10px]" src="/image/windows_xp_icon/folder_view.png" />
+      <span class="text-[16px] text-black mr-[20px]">資料夾</span>
+    </div>
+    <div class="w-[1px] h-[50px] bg-[#9d9d9d]"></div>
+    <div class="flex h-full items-center cursor-pointer hover:(bg-[#dbd7c6])">
+      <img class="w-[30px] mx-[10px]" src="/image/windows_xp_icon/icon_view.png" />
+      <div class="mr-[4px] text-[10px] text-black">▼</div>
+    </div>
+  </div>
+  <div class="h-[500px] flex">
+    <div class="w-[300px] h-full shadow bg-gradient-to-b from-[#7ca0e5] to-[#6573da] p-[20px]">
+      <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px]">
+        <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="openClose()">
+          <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">系統任務</span>
+          <img class="transform" :class="dropContentStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
+        </div>
+        <div class="drop_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropContentHeight ? `${dropContentHeight}px` : 0 }">
+          <div v-for="(item,index) in task" :key="index" class="flex items-center my-[8px]">
+            <img class="w-[18px] mr-[6px] cursor-pointer" :src="item.img" />
+            <span class="text-[#4262a6] text-[12px] cursor-pointer hover:(underline)">{{item.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px] mt-[20px]">
+        <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="detailOpenClose()">
+          <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">詳細信息</span>
+          <img class="transform" :class="dropDetailStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
+        </div>
+        <div class="drop_detail_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropDetailHeight ? `${dropDetailHeight}px` : 0 }">
+          <div class="flex flex-col my-[8px]">
+            <span class="text-[12px] font-black">我的電腦</span>
+            <span class="text-[12px]">系統文件夾</span>
+          </div>
+        </div>
+      </div>
+      <img class="absolute left-[20px] bottom-[20px]" src="/image/rover_windows_xp.gif" />
+    </div>
+    <div class="w-[700px] h-full bg-[#fff]">
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-import {ref} from 'vue'
-import {app} from '@/configs/index.js'
+import {app,otherWindow} from '@/configs/index.js'
 import { useCounterStore } from '@/store/index.js'
+import {ref} from 'vue'
 export default {
   setup() {
-    const {storeTaskbarApp,storeDesktopApp,deleteIndex} = useCounterStore()
+    const {storeTaskbarApp,storeDesktopApp,deleteIndex,sortIndex,daggle} = useCounterStore()
     const data=app.find(item=>item.id===4)
-    const mineweeperDisplay=ref(false)
-    const statusConsole=['就緒...','遊戲中...','你贏了！','Opps！']
-    const gameStatus=['你輸了！','你贏了！']
-    const num=ref(12)
-    const status=ref(false) //開始狀態
-    let box=[] //炸彈位置
-    let boomNumAll=[] //炸彈位置
-    const clickStatus=ref(JSON.parse(JSON.stringify(new Array(num.value).fill(JSON.parse(JSON.stringify(new Array(num.value).fill(0))))))) //已點擊位置 1左鍵 2右鍵
-    const probability=ref(0.125) //地雷機率
-    const total=ref(num.value*num.value) //總格數
-    let boomNum=Math.floor(total.value*probability.value) //炸彈數量
-    const boomClickNum=ref(0) //點擊炸彈數量
-    const startButtonFace=ref('🙂')
-    let startBool=false //是否開始
-    let timer //計時器
-    const timerVal=ref(0) //計時
-    const time=ref('00:00') //計時顯示
-    function timerCount(timer){ //計時
-      timerVal.value++
-      time.value=Math.floor(timerVal.value/60).toString().padStart(2,'0')+':'+(timer.value%60).toString().padStart(2,'0')
-    }
-    //開始
-    const start=()=>{
-      reset()
-      startButtonFace.value='🙂'
-      if(!startBool)timer=setInterval(timerCount,1000,timerVal)
-      startBool=true
-      boomClickNum.value=0
-      clickStatus.value=JSON.parse(JSON.stringify(new Array(num.value).fill(JSON.parse(JSON.stringify(new Array(num.value).fill(0))))))
-      status.value=true
-      box = JSON.parse(JSON.stringify(new Array(num.value).fill(JSON.parse(JSON.stringify(new Array(num.value).fill(false))))))
-      boomNumAll = JSON.parse(JSON.stringify(new Array(num.value).fill(JSON.parse(JSON.stringify(new Array(num.value).fill(false))))))
-      total.value=num.value*num.value
-      boomNum=Math.floor(total.value*probability.value)
-      //設置炸彈
-      for(let i=1;i<=boomNum;i++){
-        let boom=Math.floor(Math.random()*(total.value))
-        let row=Math.floor(boom/num.value)
-        let col=boom%num.value
-        if(box[row][col]) i--
-        else box[row][col]=true
-      }
-      //計算每個位置炸彈數量
-      for(let i=0;i<num.value;i++){
-        for(let j=0;j<num.value;j++){
-          boomNumAll[i][j]=boomNumCount(i,j)
-        }
-      }
-      // console.log('boomNumAll',boomNumAll)
-    }
-    //結束
-    const end=(val)=>{
-      startBool=false
-      clearInterval(timer)
-      switch(val){
-        case 0:
-          startButtonFace.value='😵'
-          for(let i=0;i<num.value;i++){
-            for(let j=0;j<num.value;j++){
-              if(box[i][j]){
-                document.getElementsByClassName('box')[i*num.value+j].innerHTML='💣'
-                document.getElementsByClassName('box')[i*num.value+j].classList.remove("box_noclick_bg")
-                document.getElementsByClassName('box')[i*num.value+j].classList.add("box_click_bg")
-              }
-            }
-          }
-          break
-        case 1:
-          startButtonFace.value='😎'
-          for(let i=0;i<num.value;i++){
-            for(let j=0;j<num.value;j++){
-              if(boomNumAll[i][j]>0){
-                document.getElementsByClassName('box')[i*num.value+j].innerHTML=boomNumAll[i][j]
-                document.getElementsByClassName('box')[i*num.value+j].classList.remove("box_noclick_bg")
-                document.getElementsByClassName('box')[i*num.value+j].classList.add("box_click_bg")
-              }
-              else if(boomNumAll[i][j]===-1) document.getElementsByClassName('box')[i*num.value+j].innerHTML='🚩'
-              else console.log(2)
-            }
-          }
-          break
-      }
-      console.log(gameStatus[val])
-    }
-    const reset=()=>{
-      timerVal.value=0
-      time.value='00:00'
-      status.value=false
-      for(let i=0;i<total.value;i++){
-        document.getElementsByClassName('box')[i].innerHTML=''
-        document.getElementsByClassName('box')[i].classList.remove("box_click_bg")
-        document.getElementsByClassName('box')[i].classList.add("box_noclick_bg")
-      }
-    }
-    //炸彈數量
-    function boomNumCount(x,y){
-      if(box[x][y]) return -1
-      let x1=x-1>=0?x-1:0
-      let x2=x+1<num.value?x+1:num.value-1
-      let y1=y-1>=0?y-1:0
-      let y2=y+1<num.value?y+1:num.value-1
-      let boom=0
-      for(let i=x1;i<=x2;i++){
-        for(let j=y1;j<=y2;j++){
-          if(box[i][j]) boom++
-        }
-      }
-      return boom
-    }
-    //左鍵
-    const leftMouse=(val)=>{
-      if(!startBool) return
-      let row=Math.floor(val/num.value)
-      let col=val%num.value
-      if(!status.value || clickStatus.value?.[row][col]) return
-      if(boomNumAll[row][col]===-1) end(0)
-      else decide(row,col,val)
-    }
-    //右鍵
-    const rightMouse=(val)=>{
-      if(!startBool) return
-      let row=Math.floor(val/num.value)
-      let col=val%num.value
-      if(!status.value || clickStatus.value?.[row][col]===1) return
-      boomClickNum.value=clickStatus.value[row][col]===2?boomClickNum.value-1:boomClickNum.value+1
-      clickStatus.value[row][col]=clickStatus.value[row][col]===2?0:2
-      if(clickStatus.value[row][col]===2){
-        document.getElementsByClassName('box')[val].innerHTML='🚩'
-      }
-      else{
-        document.getElementsByClassName('box')[val].innerHTML=''
-      }
-      winDecide()
-    }
-    //中鍵
-    const centerMouse=(val,bool)=>{
-      if(!startBool) return
-      let x=Math.floor(val/num.value)
-      let y=val%num.value
-      if(clickStatus.value[x][y]!==1 || boomNumAll[x][y]===0) return
-      let x1=x-1>=0?x-1:0
-      let x2=x+1<num.value?x+1:num.value-1
-      let y1=y-1>=0?y-1:0
-      let y2=y+1<num.value?y+1:num.value-1
-      if(bool){
-        let boom=0
-        for(let i=x1;i<=x2;i++){
-          for(let j=y1;j<=y2;j++){
-            if(clickStatus.value[i][j]===2) boom++
-            if(clickStatus.value[i][j]===0){
-              document.getElementsByClassName('box')[i*num.value+j].classList.remove("box_centerClick_bg")
-              document.getElementsByClassName('box')[i*num.value+j].classList.add("box_noclick_bg")
-            }
-          }
-        }
-        if(boom===boomNumAll[x][y]){
-          for(let i=x1;i<=x2;i++){
-            for(let j=y1;j<=y2;j++){
-              if(clickStatus.value[i][j]===0) leftMouse(i*num.value+j)
-            }
-          }
-        }
-      }
-      else{
-        for(let i=x1;i<=x2;i++){
-          for(let j=y1;j<=y2;j++){
-            if(clickStatus.value[i][j]===0){
-              document.getElementsByClassName('box')[i*num.value+j].classList.remove("box_noclick_bg")
-              document.getElementsByClassName('box')[i*num.value+j].classList.add("box_centerClick_bg")
-            }
-          }
-        }
-      }
-    }
-    //左鍵判斷
-    function decide(x,y,val){
-      if(clickStatus.value[x][y]===1) return
-      clickStatus.value[x][y]=1
-      let x1=x-1>=0?x-1:0
-      let x2=x+1<num.value?x+1:num.value-1
-      let y1=y-1>=0?y-1:0
-      let y2=y+1<num.value?y+1:num.value-1
-      let boom=0
-      for(let i=x1;i<=x2;i++){
-        for(let j=y1;j<=y2;j++){
-          if(box[i][j]) boom++
-        }
-      }
-      if(boom===0){
-        document.getElementsByClassName('box')[val].classList.remove("box_noclick_bg")
-        document.getElementsByClassName('box')[val].classList.add("box_click_bg")
-        if(x-1>=0&&y-1>=0)decide(x-1,y-1,val-num.value-1)
-        if(x-1>=0)decide(x-1,y,val-num.value)
-        if(x-1>=0&&y+1<num.value)decide(x-1,y+1,val-num.value+1)
-        if(y-1>=0)decide(x,y-1,val-1)
-        if(y+1<num.value)decide(x,y+1,val+1)
-        if(x+1<num.value&&y-1>=0)decide(x+1,y-1,val+num.value-1)
-        if(x+1<num.value)decide(x+1,y,val+num.value)
-        if(x+1<num.value&&y+1<num.value)decide(x+1,y+1,val+num.value+1)
-      }
-      else{
-        document.getElementsByClassName('box')[val].innerHTML=boom
-        document.getElementsByClassName('box')[val].classList.remove("box_noclick_bg")
-        document.getElementsByClassName('box')[val].classList.add("box_click_bg")
-      }
-      //判斷是否結束
-      let leftClick=0
-      for(let i=0;i<num.value;i++)
-        for(let j=0;j<num.value;j++)
-          if(clickStatus.value[i][j]===1&&!box[i][j]) leftClick++
-      if(leftClick===total.value-boomNum) end(1)
-    }
-    //結束判斷(右鍵)
-    function winDecide(){
-      if(boomClickNum.value===boomNum){
-        for(let i=0;i<num.value;i++)
-          for(let j=0;j<num.value;j++)
-            if(clickStatus.value[i][j]===2&&!box[i][j]) return
-        end(1)
-      }
-    }
-    const eButton=ref(0)
-    function mouse(e,val){
-      const clickVal=ref(0) //點擊位置
-      clickVal.value=val-1
-      switch (eButton.value){
-        case 1:
-          leftMouse(clickVal.value)
-          break;
-        case 2:
-          rightMouse(clickVal.value)
-          break;
-        case 3:
-        case 4:
-          centerMouse(clickVal.value,true)
-          break;
-        default:
-          break;
-      }
-    }
-    function mouseDown(e,val){
-      const clickVal=ref(0) //點擊位置
-      clickVal.value=val-1
-      eButton.value=e.buttons
-      switch (e.buttons){
-        case 3:
-        case 4:
-          centerMouse(clickVal.value,false)
-          break;
-        default:
-          break;
-      }
-
-    }
     const close=()=>{
       deleteIndex(storeDesktopApp,4,true)
       deleteIndex(storeTaskbarApp,4,false)
     }
-    return{
-      num,
-      status,
-      clickStatus,
-      boomClickNum,
-      boomNum,
-      startButtonFace,
-      time,
-      statusConsole,
-      mineweeperDisplay,
-      data,
-      //fn
-      start,
-      mouse,
-      mouseDown,
-      close,
+    const dropContentStatus=ref(true)
+    const dropContentHeight=ref(86)
+    const openClose=()=>{
+      dropContentStatus.value=!dropContentStatus.value
+      if(dropContentStatus.value) dropContentHeight.value=document.querySelector('.drop_content')?document.querySelector('.drop_content').scrollHeight:0
+      else dropContentHeight.value=0
     }
-  },
+    const dropAddressContentStatus=ref(true)
+    const dropAddressContentHeight=ref(112)
+    const otherOpenClose=()=>{
+      dropAddressContentStatus.value=!dropAddressContentStatus.value
+      if(dropAddressContentStatus.value) dropAddressContentHeight.value=document.querySelector('.drop_address_content')?document.querySelector('.drop_address_content').scrollHeight:0
+      else dropAddressContentHeight.value=0
+    }
+    const dropDetailStatus=ref(true)
+    const dropDetailHeight=ref(40)
+    const detailOpenClose=()=>{
+      dropDetailStatus.value=!dropDetailStatus.value
+      if(dropDetailStatus.value) dropDetailHeight.value=document.querySelector('.drop_detail_content')?document.querySelector('.drop_detail_content').scrollHeight:0
+      else dropDetailHeight.value=0
+    }
+    const task=[
+      {name:'檢視系統資訊',img:'/image/windows_xp_icon/explorer_properties.png'},
+      {name:'新增或移除程式',img:'/image/windows_xp_icon/programs.png'},
+      {name:'變更設置',img:'/image/windows_xp_icon/control_panel.png'},
+    ]
+    const address=[
+      {name:'網路上的芳鄰',img:'/image/windows_xp_icon/network.png'},
+      {name:'我的文件',img:'/image/windows_xp_icon/my_file.png'},
+      {name:'共享文件',img:'/image/windows_xp_icon/file.png'},
+      {name:'控制台',img:'/image/windows_xp_icon/control_panel.png'},
+    ]
+    const disk=[
+      {name:'本機磁碟(C:)',img:'/image/windows_xp_icon/disk.png'},
+      {name:'DWG(D:)',img:'/image/windows_xp_icon/disk.png'},
+      {name:'本機磁碟(E:)',img:'/image/windows_xp_icon/disk.png'},
+      {name:'本機磁碟(F:)',img:'/image/windows_xp_icon/disk.png'},
+    ]
+    const saveDisk=[
+      {name:'3.5軟碟機(A:)',img:'/image/windows_xp_icon/floppy_disk.png'},
+      {name:'DVD 驅動器(E:)',img:'/image/windows_xp_icon/DVD.png'},
+    ]
+    const clickCss=(val,index)=>{
+      if(index===0){
+        for(let i=0;i<disk.length;i++){
+          if(i===val)document.getElementsByClassName('disk_text')[val].classList.add('click_text')
+          else document.getElementsByClassName('disk_text')[i].classList.remove('click_text')
+        }
+      }
+      else if(index===1){
+        for(let i=0;i<saveDisk.length;i++){
+          if(i===val)document.getElementsByClassName('save_disk_text')[val].classList.add('click_text')
+          else document.getElementsByClassName('save_disk_text')[i].classList.remove('click_text')
+        }
+      }
+    }
+    const fileContent=['建立捷徑(S)','刪除(D)','重新命名(M)','內容(R)','關閉(C))']
+    const fileDisplay=ref(false)
+    const file=()=>{
+      fileDisplay.value=!fileDisplay.value
+      editDisplay.value=false
+      veiwDisplay.value=false
+      favouriteDisplay.value=false
+      toolDisplay.value=false
+      helpDisplay.value=false
+    }
+    const editContent=['復原(U)','剪下(T)','複製(C)','貼上(P)','貼上捷徑(S)','複製到資料夾(F)','移到資料夾(V)','全選(A)','反向選擇(I)']
+    const editDisplay=ref(false)
+    const edit=()=>{
+      editDisplay.value=!editDisplay.value
+      fileDisplay.value=false
+      veiwDisplay.value=false
+      favouriteDisplay.value=false
+      toolDisplay.value=false
+      helpDisplay.value=false
+    }
+    const veiwContent=['工具列(T)','狀態列(B)','瀏覽器列(E)','縮圖(H)','並排(S)','圖示(N)','清單(L)','詳細資料(D)','排列圖示依(I)','選擇詳細資料(C)...','移至(O)','重新整理(R)']
+    const veiwDisplay=ref(false)
+    const veiw=()=>{
+      veiwDisplay.value=!veiwDisplay.value
+      fileDisplay.value=false
+      editDisplay.value=false
+      favouriteDisplay.value=false
+      toolDisplay.value=false
+      helpDisplay.value=false
+    }
+    const favouriteContent=['加到我的最愛(A)','組織我的最愛(O)','連結(E)','MSN.com','廣播電台指南']
+    const favouriteDisplay=ref(false)
+    const favourite=()=>{
+      favouriteDisplay.value=!favouriteDisplay.value
+      fileDisplay.value=false
+      editDisplay.value=false
+      veiwDisplay.value=false
+      toolDisplay.value=false
+      helpDisplay.value=false
+    }
+    const toolContent=['連線網路磁碟機(N)...','中斷網路磁碟機(D)...','同步處理(S)...','資料夾選項(O)...']
+    const toolDisplay=ref(false)
+    const tool=()=>{
+      toolDisplay.value=!toolDisplay.value
+      fileDisplay.value=false
+      editDisplay.value=false
+      veiwDisplay.value=false
+      favouriteDisplay.value=false
+      helpDisplay.value=false
+    }
+    const helpContent=[
+      {content:'說明及支援中心(H)',icon:'',display:false},
+      {content:'備份 Windows是合法的版本嗎(L)?',icon:'',display:false},
+      {content:'關於Windows(A)',icon:'about',display:true},]
+    const helpDisplay=ref(false)
+    const help=()=>{
+      helpDisplay.value=!helpDisplay.value
+      fileDisplay.value=false
+      editDisplay.value=false
+      veiwDisplay.value=false
+      favouriteDisplay.value=false
+      toolDisplay.value=false
+    }
+    const helpAction=(val)=>{
+      switch(val){
+        case 'about':
+          if(!storeDesktopApp.some(items=>{return items.className===val})) storeDesktopApp.push(otherWindow.find(item=>item.className===val))
+          sortIndex(storeDesktopApp.find(item=>item.className===val).id)
+          daggle(val)
+          helpDisplay.value=false
+          break
+        default:
+          break
+      }
+    }
+    return{
+      data,
+      task,
+      address,
+      dropContentHeight,
+      dropContentStatus,
+      dropAddressContentStatus,
+      dropAddressContentHeight,
+      dropDetailStatus,
+      dropDetailHeight,
+      disk,
+      saveDisk,
+      fileContent,
+      fileDisplay,
+      editContent,
+      editDisplay,
+      veiwContent,
+      veiwDisplay,
+      favouriteContent,
+      favouriteDisplay,
+      toolContent,
+      toolDisplay,
+      helpContent,
+      helpDisplay,
+      //fn
+      close,
+      openClose,
+      otherOpenClose,
+      detailOpenClose,
+      clickCss,
+      file,
+      edit,
+      veiw,
+      favourite,
+      tool,
+      help,
+      helpAction,
+    }
+  }
 }
 </script>

@@ -16,19 +16,21 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    padding-right: 50px;
+    padding-right: 40px;
   }
-  .center{
+  .shut_down_center{
     height: 450px;
     display: flex;
   }
   .center_left{
+    padding-top: 10px;
     height: 100%;
     width: 240px;
     background-color: #fff;
     border-right: 1px solid #8ea2cd;
   }
   .center_rigth{
+    padding-top: 10px;
     height: 100%;
     width: 200px;
     background-color: #d3e5fa;
@@ -55,10 +57,10 @@
       </div>
       <div>
         <div class="orange_line"></div>
-        <div class="center">
+        <div class="shut_down_center">
           <div class="center_left">
             <div v-for="(item,index) in app" :key="index">
-              <div class="px-[10px] py-[2px] flex items-center cursor-pointer hover:(bg-[#1264c8] text-white)" v-if="index<9" @click="display(item.id,item.className)">
+              <div class="px-[10px] py-[2px] flex items-center cursor-pointer hover:(bg-[#1264c8] text-white)" v-if="index<9" @click="display(item.id,item.className,'left')">
                 <img class="w-[40px] mr-[4px]" :src="item.img" />
                 <span class="text-[14px] ">{{ item.name }}</span>
               </div>
@@ -71,18 +73,24 @@
             </div>
           </div>
           <div class="center_rigth">
-
+            <div v-for="(item,index) in start_right" :key="index">
+              <div class="px-[10px] py-[2px] flex items-center cursor-pointer hover:(bg-[#1264c8] text-white)" v-if="index<9" @click="display(item.id,item.className,'right')">
+                <img class="w-[30px] mr-[4px]" :src="item.img" />
+                <span class="text-[12px] ">{{ item.name }}</span>
+              </div>
+              <div v-if="index===3||index===5" class="line"></div>
+            </div>
           </div>
         </div>
       </div>
       <div class="bottom">
         <div class="flex items-center cursor-pointer">
-          <img class="w-[30px]" src="/image/windows_xp_icon/shutdown.png" />
-          <span class="ml-[6px] text-[12px]">Sh<u>u</u>t down</span>
-        </div>
-        <div class="flex items-center ml-[20px] cursor-pointer">
           <img class="w-[30px]" src="/image/windows_xp_icon/lock.png" />
-          <span class="ml-[6px] text-[12px] text-white">Log Off</span>
+          <span class="ml-[6px] text-[12px] text-white hover:(text-black)">登出(L)</span>
+        </div>
+        <div class="flex items-center ml-[20px] cursor-pointer" @click="shutDownDisplayAction()">
+          <img class="w-[30px]" src="/image/windows_xp_icon/shutdown.png" />
+          <span class="ml-[6px] text-[12px] text-white hover:(text-black)">電腦關機(U)</span>
         </div>
       </div>
     </div>
@@ -90,17 +98,25 @@
 </template>
 
 <script setup>
-import {nextTick,inject} from 'vue'
-import {app} from '@/configs/index.js'
+import {app,start_right} from '@/configs/index.js'
 import { useCounterStore } from '@/store/index.js'
 const {storeTaskbarApp,storeDesktopApp,sortIndex,daggle} = useCounterStore()
 const store=useCounterStore()
-const display=(id,className)=>{
+const display=(id,className,val)=>{
   store.startStatus=false
-  if(!storeDesktopApp.some(items=>{return items.id===id})) storeDesktopApp.push(app.find(item=>item.id===id))
-  if(!storeTaskbarApp.some(items=>{return items.id===id})) storeTaskbarApp.push(app.find(item=>item.id===id))
+  if(val==='left'){
+    if(!storeDesktopApp.some(items=>{return items.id===id})) storeDesktopApp.push(app.find(item=>item.id===id))
+    if(!storeTaskbarApp.some(items=>{return items.id===id})) storeTaskbarApp.push(app.find(item=>item.id===id))
+  }
+  else{
+    if(!storeDesktopApp.some(items=>{return items.id===id})) storeDesktopApp.push(start_right.find(item=>item.id===id))
+    if(!storeTaskbarApp.some(items=>{return items.id===id})) storeTaskbarApp.push(start_right.find(item=>item.id===id))
+  }
   sortIndex(id)
   daggle(className)
 }
-
+const shutDownDisplayAction=()=>{
+  store.startStatus=false
+  store.shutDownStatus=!store.shutDownStatus
+}
 </script>

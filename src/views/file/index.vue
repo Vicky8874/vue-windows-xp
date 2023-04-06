@@ -117,7 +117,6 @@
           <span class="pl-[20px]" :class="item.display?'text-black':'text-[#aca89a]'">{{ item.content }}</span>
         </div>
       </div>
-      <!-- <about v-if="" class="absolute z-10 top-1/5 left-1/5" /> -->
     </div>
     <div class="border bg-white px-[10px] py-[2px]">
       <img class="w-[30px]" src="/image/start.png" />
@@ -151,11 +150,23 @@
     <div class="w-[300px] h-full shadow bg-gradient-to-b from-[#7ca0e5] to-[#6573da] p-[20px]">
       <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px]">
         <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="openClose()">
-          <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">系統任務</span>
+          <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">檔案及資料夾工作</span>
           <img class="transform" :class="dropContentStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
         </div>
         <div class="drop_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropContentHeight ? `${dropContentHeight}px` : 0 }">
           <div v-for="(item,index) in task" :key="index" class="flex items-center my-[8px]">
+            <img class="w-[18px] mr-[6px] cursor-pointer" :src="item.img" />
+            <span class="text-[#4262a6] text-[12px] cursor-pointer hover:(underline)">{{item.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px] mt-[20px]">
+        <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="otherOpenClose()">
+          <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">其他位置</span>
+          <img class="transform" :class="dropAddressContentStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
+        </div>
+        <div class="drop_address_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropAddressContentHeight ? `${dropAddressContentHeight}px` : 0 }">
+          <div v-for="(item,index) in address" :key="index" class="flex items-center my-[8px]">
             <img class="w-[18px] mr-[6px] cursor-pointer" :src="item.img" />
             <span class="text-[#4262a6] text-[12px] cursor-pointer hover:(underline)">{{item.name}}</span>
           </div>
@@ -168,30 +179,36 @@
         </div>
         <div class="drop_detail_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropDetailHeight ? `${dropDetailHeight}px` : 0 }">
           <div class="flex flex-col my-[8px]">
-            <span class="text-[12px] font-black">我的電腦</span>
-            <span class="text-[12px]">系統文件夾</span>
+            <span class="text-[12px] font-black">我的文件</span>
+            <span class="text-[12px]">系統資料夾</span>
           </div>
         </div>
       </div>
       <img class="absolute left-[20px] bottom-[20px]" src="/image/rover_windows_xp.gif" />
     </div>
-    <div class="w-[700px] h-full bg-[#fff]">
+    <div class="w-[700px] h-full bg-[#fff] flex flex-col">
+      <div class="flex ml-[10px] my-[20px] disk">
+        <div v-for="(item,index) in disk" :key="index" class="flex flex-col items-center mr-[30px] cursor-pointer" @click="clickCss(index)">
+          <img class="w-[30px]" :src="item.img" />
+          <span class="disk_text border-[1px] border-transparent">{{item.name}}</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 </template>
 
 <script>
-import {app,otherWindow} from '@/configs/index.js'
+import {start_right,otherWindow} from '@/configs/index.js'
 import { useCounterStore } from '@/store/index.js'
 import {ref} from 'vue'
 export default {
   setup() {
     const {storeTaskbarApp,storeDesktopApp,deleteIndex,sortIndex,daggle} = useCounterStore()
-    const data=app.find(item=>item.id===3)
+    const data=start_right.find(item=>item.id===5)
     const close=()=>{
-      deleteIndex(storeDesktopApp,3,true)
-      deleteIndex(storeTaskbarApp,3,false)
+      deleteIndex(storeDesktopApp,5,true)
+      deleteIndex(storeTaskbarApp,5,false)
     }
     const dropContentStatus=ref(true)
     const dropContentHeight=ref(86)
@@ -214,41 +231,53 @@ export default {
       if(dropDetailStatus.value) dropDetailHeight.value=document.querySelector('.drop_detail_content')?document.querySelector('.drop_detail_content').scrollHeight:0
       else dropDetailHeight.value=0
     }
-    const task=[
-      {name:'檢視系統資訊',img:'/image/windows_xp_icon/explorer_properties.png'},
-      {name:'新增或移除程式',img:'/image/windows_xp_icon/programs.png'},
-      {name:'變更設置',img:'/image/windows_xp_icon/control_panel.png'},
-    ]
+    const task=ref([
+      {name:'建立新的資料夾',img:'/image/windows_xp_icon/new_folder.png'},
+      {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
+      {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
+    ])
     const address=[
+      {name:'桌面',img:'/image/windows_xp_icon/desktop.png'},
+      {name:'共用文件',img:'/image/windows_xp_icon/file.png'},
+      {name:'我的電腦',img:'/image/windows_desktop/computer.png'},
       {name:'網路上的芳鄰',img:'/image/windows_xp_icon/network.png'},
-      {name:'我的文件',img:'/image/windows_xp_icon/my_file.png'},
-      {name:'共享文件',img:'/image/windows_xp_icon/file.png'},
-      {name:'控制台',img:'/image/windows_xp_icon/control_panel.png'},
     ]
     const disk=[
-      {name:'本機磁碟(C:)',img:'/image/windows_xp_icon/disk.png'},
-      {name:'DWG(D:)',img:'/image/windows_xp_icon/disk.png'},
-      {name:'本機磁碟(E:)',img:'/image/windows_xp_icon/disk.png'},
-      {name:'本機磁碟(F:)',img:'/image/windows_xp_icon/disk.png'},
+      {name:'我的音樂',img:'/image/windows_desktop/music.png'},
+      {name:'我的圖片',img:'/image/windows_desktop/picture.png'},
     ]
-    const saveDisk=[
-      {name:'3.5軟碟機(A:)',img:'/image/windows_xp_icon/floppy_disk.png'},
-      {name:'DVD 驅動器(E:)',img:'/image/windows_xp_icon/DVD.png'},
-    ]
-    const clickCss=(val,index)=>{
-      if(index===0){
-        for(let i=0;i<disk.length;i++){
-          if(i===val)document.getElementsByClassName('disk_text')[val].classList.add('click_text')
-          else document.getElementsByClassName('disk_text')[i].classList.remove('click_text')
-        }
+    const clickCss=(val)=>{
+      for(let i=0;i<disk.length;i++){
+        if(i===val)document.getElementsByClassName('disk_text')[val].classList.add('click_text')
+        else document.getElementsByClassName('disk_text')[i].classList.remove('click_text')
       }
-      else if(index===1){
-        for(let i=0;i<saveDisk.length;i++){
-          if(i===val)document.getElementsByClassName('save_disk_text')[val].classList.add('click_text')
-          else document.getElementsByClassName('save_disk_text')[i].classList.remove('click_text')
-        }
-      }
+      task.value=[
+        {name:'將這個資料夾重新命名',img:'/image/windows_xp_icon/rename.png'},
+        {name:'移動這個資料夾',img:'/image/windows_xp_icon/move.png'},
+        {name:'複製這個資料夾',img:'/image/windows_xp_icon/copy.png'},
+        {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
+        {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
+        {name:'以電子郵件傳送這個資料夾的檔案',img:'/image/windows_xp_icon/email.png'},
+        {name:'刪除這個資料夾',img:'/image/windows_xp_icon/delete.png'},
+      ]
+      dropContentHeight.value=196
     }
+    document.addEventListener('click',event=>{
+      try{
+        if(!(document.querySelector('.disk')===event.target||document.querySelector('.disk').contains(event.target))){
+          for(let i=0;i<disk.length;i++){
+            document.getElementsByClassName('disk_text')[i]?.classList.remove('click_text')
+          }
+          task.value=[
+            {name:'建立新的資料夾',img:'/image/windows_xp_icon/new_folder.png'},
+            {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
+            {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
+          ]
+          dropContentHeight.value=86
+        }
+      }
+      catch{}
+    })
     const fileContent=['建立捷徑(S)','刪除(D)','重新命名(M)','內容(R)','關閉(C))']
     const fileDisplay=ref(false)
     const file=()=>{
@@ -335,7 +364,6 @@ export default {
       dropDetailStatus,
       dropDetailHeight,
       disk,
-      saveDisk,
       fileContent,
       fileDisplay,
       editContent,

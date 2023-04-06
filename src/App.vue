@@ -7,6 +7,6 @@ window.addEventListener("contextmenu", e => e.preventDefault());
 <template>
 <div class="mine_bg">
   <desktop class="relative z-0" />
-  <taskbar />
+  <taskbar class="z-10" />
 </div>
 </template>

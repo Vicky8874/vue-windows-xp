@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
-import {app} from '@/configs/index.js'
+import {app,otherWindow} from '@/configs/index.js'
 import {nextTick} from 'vue'
   export const useCounterStore = defineStore('counter', {
   state: () => ({
     storeDesktopApp:[],
     storeTaskbarApp:[],
     startStatus:false,
+    shutDownStatus:false,
   }),
   getters: {
     
@@ -27,7 +28,8 @@ import {nextTick} from 'vue'
         for(let i=0;i<arr.length;i++)
           if(arr[i].zIndex>target.zIndex) arr[i].zIndex=arr[i].zIndex-1
       arr.splice(arr.indexOf(target), 1)
-      app.find(item=>item.id===id).zIndex=0
+      if(app.some(item=>item.id===id)) app.find(item=>item.id===id).zIndex=0
+      if(otherWindow.some(item=>item.id===id)) otherWindow.find(item=>item.id===id).zIndex=0
     },
     daggle(className){
       nextTick(()=>{
