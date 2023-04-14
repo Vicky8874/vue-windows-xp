@@ -75,7 +75,7 @@
   </div>
   <div class="border text-black bg-[#ece9d8] flex justify-between">
     <div class="flex flex-1 border">
-      <div class="nav" @click="file()">檔案(F)</div>
+      <div class="nav" @click="file()">檔案</div>
       <div class="nav" @click="edit()">編輯(E)</div>
       <div class="nav" @click="veiw()">檢視(V)</div>
       <div class="nav" @click="favourite()">我的最愛(A)</div>
