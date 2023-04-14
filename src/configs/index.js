@@ -5,6 +5,7 @@ import trush from '@/views/trush/index.vue'
 import iexplore from '@/views/iexplore/index.vue'
 import file from '@/views/file/index.vue'
 import picture from '@/views/picture/index.vue'
+import music from '@/views/music/index.vue'
 
 export const app=[
   {id:1,desktop:true,zIndex:0,className:'minesweeper',component:minesweeper,name:'踩地雷',display:false,img:'/image/windows_desktop/bomb.webp'},
@@ -15,7 +16,7 @@ export const app=[
 export const start_right=[
   {id:5,desktop:false,zIndex:0,className:'file',component:file,name:'我的文件',display:false,img:'/image/windows_desktop/file.png'},
   {id:6,desktop:false,zIndex:0,className:'picture',component:picture,name:'我的圖片',display:false,img:'/image/windows_desktop/picture.png'},
-  {id:7,desktop:false,zIndex:0,className:'music',component:trush,name:'我的音樂',display:false,img:'/image/windows_desktop/music.png'},
+  {id:7,desktop:false,zIndex:0,className:'music',component:music,name:'我的音樂',display:false,img:'/image/windows_desktop/music.png'},
   {id:2,desktop:false,zIndex:0,className:'computer',component:computer,name:'我的電腦',display:false,img:'/image/windows_desktop/computer.png'},
   {id:9,desktop:false,zIndex:0,className:'control',component:trush,name:'控制台(C)',display:false,img:'/image/windows_desktop/control.png'},
   {id:10,desktop:false,zIndex:0,className:'program',component:trush,name:'設定程式存取與預設值',display:false,img:'/image/windows_desktop/program.png'},

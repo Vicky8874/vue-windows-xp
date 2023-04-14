@@ -146,11 +146,14 @@
       <div class="mr-[4px] text-[10px] text-black">▼</div>
     </div>
   </div>
-  <div class="h-[500px] flex">
+  <div class="h-[650px] flex">
     <div class="w-[300px] h-full shadow bg-gradient-to-b from-[#7ca0e5] to-[#6573da] p-[20px]">
-      <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px]">
+      <div class="shadow bg-[#1f58c8] rounded-t-[6px] p-[2px]">
         <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="pictureOpenClose()">
-          <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">圖片工作</span>
+          <div class="flex">
+            <img class="absolute w-[30px] top-[148px] left-[34px] transform rotate-345" src="/image/windows_xp_icon/JPG.png" />
+            <span class="ml-[30px] text-[12px] text-white font-black group-hover:text-[#428eff]">圖片工作</span>
+          </div>
           <img class="transform" :class="dropPictureStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
         </div>
         <div class="drop_picture_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropPictureHeight ? `${dropPictureHeight}px` : 0 }">
@@ -260,8 +263,8 @@ export default {
       {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
     ])
     const address=[
-      {name:'桌面',img:'/image/windows_xp_icon/desktop.png'},
-      {name:'共用文件',img:'/image/windows_xp_icon/file.png'},
+      {name:'我的文件',img:'/image/windows_desktop/file.png'},
+      {name:'共用圖片',img:'/image/windows_desktop/picture.png'},
       {name:'我的電腦',img:'/image/windows_desktop/computer.png'},
       {name:'網路上的芳鄰',img:'/image/windows_xp_icon/network.png'},
     ]
@@ -295,7 +298,7 @@ export default {
             {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
             {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
           ]
-          dropContentHeight.value=86
+          if(dropContentStatus.value) dropContentHeight.value=86
         }
       }
       catch{}

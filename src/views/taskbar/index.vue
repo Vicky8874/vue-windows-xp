@@ -47,7 +47,8 @@
       <div class="font_arial mine_footer_start">開始</div>
     </div>
     <div v-for="(item,index) in storeTaskbarApp" :key="index">
-      <appDrawer :name="item.name" :img="item.img" @click="sortIndex(item.id)" />
+      <!-- <appDrawer :name="item.name" :img="item.img" :zIndex="num" @click="sortIndex(item.id)" /> -->
+      <appDrawer :name="item.name" :img="item.img" :zIndex="item.zIndex===num?true:false" @click="sortIndex(item.id)" />
     </div>
     <div class="mine_footer_right font_arial">
       <img class="w-[20px] mr-[10px] cursor-pointer" src="/image/windows_xp_icon/shield.png" />
@@ -68,6 +69,7 @@
   const {storeTaskbarApp,sortIndex} = useCounterStore()
   const store = useCounterStore()
   const startStatusDisplay=computed(()=>store.startStatus)
+  const num=computed(()=>store.storeTaskbarApp.length)
   document.addEventListener('click',event=>{
     if(document.querySelector('.mine_bg')===event.target&&document.querySelector('.mine_bg').contains(event.target)) store.startStatus=false
     if(document.querySelector('.bg')===event.target&&document.querySelector('.bg').contains(event.target)) store.startStatus=false

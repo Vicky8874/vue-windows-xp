@@ -146,9 +146,24 @@
       <div class="mr-[4px] text-[10px] text-black">▼</div>
     </div>
   </div>
-  <div class="h-[600px] flex">
+  <div class="h-[650px] flex">
     <div class="w-[300px] h-full shadow bg-gradient-to-b from-[#7ca0e5] to-[#6573da] p-[20px]">
-      <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px]">
+      <div class="shadow bg-[#1f58c8] rounded-t-[6px] p-[2px]">
+        <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="pictureOpenClose()">
+          <div class="flex">
+            <img class="absolute w-[30px] top-[148px] left-[34px] transform rotate-345" src="/image/windows_xp_icon/audio_devices.png" />
+            <span class="ml-[30px] text-[12px] text-white font-black group-hover:text-[#428eff]">音樂工作</span>
+          </div>
+          <img class="transform" :class="dropPictureStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
+        </div>
+        <div class="drop_picture_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropPictureHeight ? `${dropPictureHeight}px` : 0 }">
+          <div v-for="(item,index) in pictureWork" :key="index" class="flex items-center my-[8px]">
+            <img class="w-[18px] mr-[6px] cursor-pointer" :src="item.img" />
+            <span class="text-[#4262a6] text-[12px] cursor-pointer hover:(underline)">{{item.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="shadow bg-gradient-to-tr from-white to-[#c7d3f9] rounded-t-[6px] p-[2px] mt-[20px]">
         <div class="cursor-pointer flex items-center justify-between p-[4px] group" @click="openClose()">
           <span class="ml-[10px] text-[12px] text-[#2f55aa] font-black group-hover:text-[#428eff]">檔案及資料夾工作</span>
           <img class="transform" :class="dropContentStatus?'rotate-180':''" src="/image/windows_xp_icon/drow_arrow.png" />
@@ -179,12 +194,11 @@
         </div>
         <div class="drop_detail_content bg-[#d7def8] px-[14px] overflow-hidden transition-all duration-300" :style="{ maxHeight: dropDetailHeight ? `${dropDetailHeight}px` : 0 }">
           <div class="flex flex-col my-[8px]">
-            <span class="text-[12px] font-black">我的文件</span>
+            <span class="text-[12px] font-black">我的音樂</span>
             <span class="text-[12px]">系統資料夾</span>
           </div>
         </div>
       </div>
-      <img class="absolute left-[20px] bottom-[20px]" src="/image/rover_windows_xp.gif" />
     </div>
     <div class="w-[700px] h-full bg-[#fff] flex flex-col">
       <div class="flex ml-[10px] my-[20px] disk">
@@ -205,10 +219,17 @@ import {ref} from 'vue'
 export default {
   setup() {
     const {storeTaskbarApp,storeDesktopApp,deleteIndex,sortIndex,daggle} = useCounterStore()
-    const data=start_right.find(item=>item.id===5)
+    const data=start_right.find(item=>item.id===7)
     const close=()=>{
-      deleteIndex(storeDesktopApp,5,true)
-      deleteIndex(storeTaskbarApp,5,false)
+      deleteIndex(storeDesktopApp,7,true)
+      deleteIndex(storeTaskbarApp,7,false)
+    }
+    const dropPictureStatus=ref(true)
+    const dropPictureHeight=ref(86)
+    const pictureOpenClose=()=>{
+      dropPictureStatus.value=!dropPictureStatus.value
+      if(dropPictureStatus.value) dropPictureHeight.value=document.querySelector('.drop_picture_content')?document.querySelector('.drop_picture_content').scrollHeight:0
+      else dropPictureHeight.value=0
     }
     const dropContentStatus=ref(true)
     const dropContentHeight=ref(86)
@@ -231,20 +252,22 @@ export default {
       if(dropDetailStatus.value) dropDetailHeight.value=document.querySelector('.drop_detail_content')?document.querySelector('.drop_detail_content').scrollHeight:0
       else dropDetailHeight.value=0
     }
+    const pictureWork=ref([
+      {name:'播放所有曲目',img:'/image/windows_xp_icon/all_program.ico'},
+      {name:'網上購買音樂',img:'/image/windows_xp_icon/IE_media.png'},
+    ])
     const task=ref([
       {name:'建立新的資料夾',img:'/image/windows_xp_icon/new_folder.png'},
-      {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
       {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
     ])
     const address=[
-      {name:'桌面',img:'/image/windows_xp_icon/desktop.png'},
-      {name:'共用文件',img:'/image/windows_xp_icon/file.png'},
+      {name:'我的文件',img:'/image/windows_desktop/file.png'},
+      {name:'共用音樂',img:'/image/windows_desktop/music.png'},
       {name:'我的電腦',img:'/image/windows_desktop/computer.png'},
       {name:'網路上的芳鄰',img:'/image/windows_xp_icon/network.png'},
     ]
     const disk=[
-      {name:'我的音樂',img:'/image/windows_desktop/music.png'},
-      {name:'我的圖片',img:'/image/windows_desktop/picture.png'},
+      {name:'範例音樂',img:'/image/windows_xp_icon/file.png'},
     ]
     const clickCss=(val)=>{
       for(let i=0;i<disk.length;i++){
@@ -252,13 +275,11 @@ export default {
         else document.getElementsByClassName('disk_text')[i].classList.remove('click_text')
       }
       task.value=[
-        {name:'將這個資料夾重新命名',img:'/image/windows_xp_icon/rename.png'},
-        {name:'移動這個資料夾',img:'/image/windows_xp_icon/move.png'},
-        {name:'複製這個資料夾',img:'/image/windows_xp_icon/copy.png'},
-        {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
-        {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
-        {name:'以電子郵件傳送這個資料夾的檔案',img:'/image/windows_xp_icon/email.png'},
-        {name:'刪除這個資料夾',img:'/image/windows_xp_icon/delete.png'},
+        {name:'將這個檔案重新命名',img:'/image/windows_xp_icon/rename.png'},
+        {name:'移動這個檔案',img:'/image/windows_xp_icon/move.png'},
+        {name:'複製這個檔案',img:'/image/windows_xp_icon/copy.png'},
+        {name:'以電子郵件傳送這個檔案',img:'/image/windows_xp_icon/email.png'},
+        {name:'刪除這個檔案',img:'/image/windows_xp_icon/delete.png'},
       ]
       dropContentHeight.value=196
     }
@@ -270,7 +291,6 @@ export default {
           }
           task.value=[
             {name:'建立新的資料夾',img:'/image/windows_xp_icon/new_folder.png'},
-            {name:'將這個資料夾發佈到網站',img:'/image/windows_xp_icon/publish_to_web.png'},
             {name:'共用這個資料夾',img:'/image/windows_xp_icon/shared_folder.png'},
           ]
           if(dropContentStatus.value) dropContentHeight.value=86
@@ -355,9 +375,12 @@ export default {
     }
     return{
       data,
+      pictureWork,
       task,
       address,
+      dropPictureHeight,
       dropContentHeight,
+      dropPictureStatus,
       dropContentStatus,
       dropAddressContentStatus,
       dropAddressContentHeight,
@@ -378,6 +401,7 @@ export default {
       helpDisplay,
       //fn
       close,
+      pictureOpenClose,
       openClose,
       otherOpenClose,
       detailOpenClose,
