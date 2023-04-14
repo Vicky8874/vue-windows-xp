@@ -11,8 +11,8 @@ jobs:
 
     env:
       MY_SECRET   : ${{secrets.commit}}
-      USER_NAME   : bot
-      USER_EMAIL  : samakryi@gmail.com
+      USER_NAME   : vicky
+      USER_EMAIL  : ji3g4yjo4dk3942k7@gmail.com
       PUBLISH_DIR  : dist
 
     runs-on: ubuntu-latest
