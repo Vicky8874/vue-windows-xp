@@ -52,7 +52,7 @@
     </div>
     <div class="mine_footer_right font_arial">
       <img class="w-[20px] mr-[10px] cursor-pointer" src="/image/windows_xp_icon/shield.png" />
-      <div>{{ dayjs().format('A')==='AM'?'上午':'下午' }} {{ dayjs().format('HH:MM') }}</div>
+      <div>{{ timeText }} {{ time }}</div>
     </div>
     <div class="absolute bottom-[33px]">
       <startWindows v-if="startStatusDisplay" />
@@ -64,8 +64,15 @@
   import appDrawer from './appDrawer.vue'
   import startWindows from './startWindows.vue'
   import dayjs from 'dayjs'
-  import {computed} from 'vue'
+  import {computed,ref} from 'vue'
   import { useCounterStore } from '@/store/index.js'
+  const time=ref(dayjs().format('HH:mm:ss'))
+  const timeText=ref(dayjs().format('A')==='AM'?'上午':'下午')
+  function timer(){
+    time.value=dayjs().format('HH:mm:ss')
+    timeText.value=dayjs().format('A')==='AM'?'上午':'下午'
+  }
+  setInterval(timer,1000);
   const {storeTaskbarApp,sortIndex} = useCounterStore()
   const store = useCounterStore()
   const startStatusDisplay=computed(()=>store.startStatus)
