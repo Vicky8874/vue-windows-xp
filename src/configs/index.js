@@ -7,6 +7,7 @@ import file from '@/views/file/index.vue'
 import picture from '@/views/picture/index.vue'
 import music from '@/views/music/index.vue'
 import control from '@/views/control/index.vue'
+import run from '@/views/run/index.vue'
 
 export const app=[
   {id:1,desktop:true,zIndex:0,className:'minesweeper',component:minesweeper,name:'踩地雷',display:false,img:new URL('/image/windows_desktop/bomb.webp',import.meta.url)},
@@ -23,7 +24,7 @@ export const start_right=[
   // {id:10,desktop:false,zIndex:0,className:'program',component:trush,name:'設定程式存取與預設值',display:false,img:new URL('/image/windows_desktop/program.png',import.meta.url)},
   // {id:11,desktop:false,zIndex:0,className:'help',component:trush,name:'說明及支援(H)',display:false,img:new URL('/image/windows_desktop/help.png',import.meta.url)},
   // {id:12,desktop:false,zIndex:0,className:'search',component:trush,name:'搜尋(S)',display:false,img:new URL('/image/windows_desktop/search.png',import.meta.url)},
-  // {id:13,desktop:false,zIndex:0,className:'run',component:trush,name:'執行(R)...',display:false,img:new URL('/image/windows_desktop/run.png',import.meta.url)},
+  {id:13,desktop:false,zIndex:0,className:'run',component:run,name:'執行(R)...',display:false,img:new URL('/image/windows_desktop/run.png',import.meta.url)},
 ]
 export const otherWindow=[
   {id:8,desktop:false,zIndex:0,className:'about',component:about,name:'關於 Windows',display:false,img:''},
