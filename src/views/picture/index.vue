@@ -253,23 +253,23 @@ export default {
       else dropDetailHeight.value=0
     }
     const pictureWork=ref([
-      {name:'以幻燈片秀來檢視',img:new URL('/image/windows_xp_icon/slideshow.png')},
-      {name:'從線上訂購相片',img:new URL('/image/windows_xp_icon/publish_photos_to_web.png')},
-      {name:'列印圖片',img:new URL('/image/windows_xp_icon/print_photos.png')},
+      {name:'以幻燈片秀來檢視',img:new URL('/image/windows_xp_icon/slideshow.png',import.meta.url)},
+      {name:'從線上訂購相片',img:new URL('/image/windows_xp_icon/publish_photos_to_web.png',import.meta.url)},
+      {name:'列印圖片',img:new URL('/image/windows_xp_icon/print_photos.png',import.meta.url)},
     ])
     const task=ref([
-      {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png')},
-      {name:'將這個資料夾發佈到網站',img:new URL('/image/windows_xp_icon/publish_to_web.png')},
-      {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png')},
+      {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png',import.meta.url)},
+      {name:'將這個資料夾發佈到網站',img:new URL('/image/windows_xp_icon/publish_to_web.png',import.meta.url)},
+      {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png',import.meta.url)},
     ])
     const address=[
-      {name:'我的文件',img:new URL('/image/windows_desktop/file.png')},
-      {name:'共用圖片',img:new URL('/image/windows_desktop/picture.png')},
-      {name:'我的電腦',img:new URL('/image/windows_desktop/computer.png')},
-      {name:'網路上的芳鄰',img:new URL('/image/windows_xp_icon/network.png')},
+      {name:'我的文件',img:new URL('/image/windows_desktop/file.png',import.meta.url)},
+      {name:'共用圖片',img:new URL('/image/windows_desktop/picture.png',import.meta.url)},
+      {name:'我的電腦',img:new URL('/image/windows_desktop/computer.png',import.meta.url)},
+      {name:'網路上的芳鄰',img:new URL('/image/windows_xp_icon/network.png',import.meta.url)},
     ]
     const disk=[
-      {name:'範例圖片',img:new URL('/image/windows_desktop/picture.png')},
+      {name:'範例圖片',img:new URL('/image/windows_desktop/picture.png',import.meta.url)},
     ]
     const clickCss=(val)=>{
       for(let i=0;i<disk.length;i++){
@@ -277,13 +277,13 @@ export default {
         else document.getElementsByClassName('disk_text')[i].classList.remove('click_text')
       }
       task.value=[
-        {name:'將這個資料夾重新命名',img:new URL('/image/windows_xp_icon/rename.png')},
-        {name:'移動這個資料夾',img:new URL('/image/windows_xp_icon/move.png')},
-        {name:'複製這個資料夾',img:new URL('/image/windows_xp_icon/copy.png')},
-        {name:'將這個資料夾發佈到網站',img:new URL('/image/windows_xp_icon/publish_to_web.png')},
-        {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png')},
-        {name:'以電子郵件傳送這個資料夾的檔案',img:new URL('/image/windows_xp_icon/email.png')},
-        {name:'刪除這個資料夾',img:new URL('/image/windows_xp_icon/delete.png')},
+        {name:'將這個資料夾重新命名',img:new URL('/image/windows_xp_icon/rename.png',import.meta.url)},
+        {name:'移動這個資料夾',img:new URL('/image/windows_xp_icon/move.png',import.meta.url)},
+        {name:'複製這個資料夾',img:new URL('/image/windows_xp_icon/copy.png',import.meta.url)},
+        {name:'將這個資料夾發佈到網站',img:new URL('/image/windows_xp_icon/publish_to_web.png',import.meta.url)},
+        {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png',import.meta.url)},
+        {name:'以電子郵件傳送這個資料夾的檔案',img:new URL('/image/windows_xp_icon/email.png',import.meta.url)},
+        {name:'刪除這個資料夾',img:new URL('/image/windows_xp_icon/delete.png',import.meta.url)},
       ]
       dropContentHeight.value=196
     }
@@ -294,9 +294,9 @@ export default {
             document.getElementsByClassName('disk_text')[i]?.classList.remove('click_text')
           }
           task.value=[
-            {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png')},
-            {name:'將這個資料夾發佈到網站',img:new URL('/image/windows_xp_icon/publish_to_web.png')},
-            {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png')},
+            {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png',import.meta.url)},
+            {name:'將這個資料夾發佈到網站',img:new URL('/image/windows_xp_icon/publish_to_web.png',import.meta.url)},
+            {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png',import.meta.url)},
           ]
           if(dropContentStatus.value) dropContentHeight.value=86
         }

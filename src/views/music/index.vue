@@ -253,21 +253,21 @@ export default {
       else dropDetailHeight.value=0
     }
     const pictureWork=ref([
-      {name:'播放所有曲目',img:new URL('/image/windows_xp_icon/all_program.ico')},
-      {name:'網上購買音樂',img:new URL('/image/windows_xp_icon/IE_media.png')},
+      {name:'播放所有曲目',img:new URL('/image/windows_xp_icon/all_program.ico',import.meta.url)},
+      {name:'網上購買音樂',img:new URL('/image/windows_xp_icon/IE_media.png',import.meta.url)},
     ])
     const task=ref([
-      {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png')},
-      {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png')},
+      {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png',import.meta.url)},
+      {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png',import.meta.url)},
     ])
     const address=[
-      {name:'我的文件',img:new URL('/image/windows_desktop/file.png')},
-      {name:'共用音樂',img:new URL('/image/windows_desktop/music.png')},
-      {name:'我的電腦',img:new URL('/image/windows_desktop/computer.png')},
-      {name:'網路上的芳鄰',img:new URL('/image/windows_xp_icon/network.png')},
+      {name:'我的文件',img:new URL('/image/windows_desktop/file.png',import.meta.url)},
+      {name:'共用音樂',img:new URL('/image/windows_desktop/music.png',import.meta.url)},
+      {name:'我的電腦',img:new URL('/image/windows_desktop/computer.png',import.meta.url)},
+      {name:'網路上的芳鄰',img:new URL('/image/windows_xp_icon/network.png',import.meta.url)},
     ]
     const disk=[
-      {name:'範例音樂',img:new URL('/image/windows_xp_icon/file.png')},
+      {name:'範例音樂',img:new URL('/image/windows_xp_icon/file.png',import.meta.url)},
     ]
     const clickCss=(val)=>{
       for(let i=0;i<disk.length;i++){
@@ -275,11 +275,11 @@ export default {
         else document.getElementsByClassName('disk_text')[i].classList.remove('click_text')
       }
       task.value=[
-        {name:'將這個檔案重新命名',img:new URL('/image/windows_xp_icon/rename.png')},
-        {name:'移動這個檔案',img:new URL('/image/windows_xp_icon/move.png')},
-        {name:'複製這個檔案',img:new URL('/image/windows_xp_icon/copy.png')},
-        {name:'以電子郵件傳送這個檔案',img:new URL('/image/windows_xp_icon/email.png')},
-        {name:'刪除這個檔案',img:new URL('/image/windows_xp_icon/delete.png')},
+        {name:'將這個檔案重新命名',img:new URL('/image/windows_xp_icon/rename.png',import.meta.url)},
+        {name:'移動這個檔案',img:new URL('/image/windows_xp_icon/move.png',import.meta.url)},
+        {name:'複製這個檔案',img:new URL('/image/windows_xp_icon/copy.png',import.meta.url)},
+        {name:'以電子郵件傳送這個檔案',img:new URL('/image/windows_xp_icon/email.png',import.meta.url)},
+        {name:'刪除這個檔案',img:new URL('/image/windows_xp_icon/delete.png',import.meta.url)},
       ]
       dropContentHeight.value=196
     }
@@ -290,8 +290,8 @@ export default {
             document.getElementsByClassName('disk_text')[i]?.classList.remove('click_text')
           }
           task.value=[
-            {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png')},
-            {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png')},
+            {name:'建立新的資料夾',img:new URL('/image/windows_xp_icon/new_folder.png',import.meta.url)},
+            {name:'共用這個資料夾',img:new URL('/image/windows_xp_icon/shared_folder.png',import.meta.url)},
           ]
           if(dropContentStatus.value) dropContentHeight.value=86
         }
