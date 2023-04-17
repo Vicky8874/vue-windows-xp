@@ -1,43 +1,49 @@
-name: deploy
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
     branches:
       - main
 
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
 jobs:
-  build:
-    name: build and deploy github page
-
-    env:
-      MY_SECRET   : ${{secrets.commit}}
-      USER_NAME   : vicky
-      USER_EMAIL  : ji3g4yjo4dk3942k7@gmail.com
-      PUBLISH_DIR  : dist
-
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x]
-
     steps:
-      - uses: actions/checkout@v3
-      - name: use node ${{ matrix.node-version }} 
-        uses: actions/setup-node@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: build, prepare file
-        run: |
-          npm install
-          npm run build
-      - name: update file
-        run: |
-          cd $PUBLISH_DIR
-          git init
-          git config --local user.name $USER_NAME
-          git config --local user.email $USER_EMAIL
-          git checkout -b main
-          git add .
-          git commit -m "deploy"
-          git push -f https://$MY_SECRET@github.com/$GITHUB_REPOSITORY.git main:gh-pages
+          node-version: 18
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload dist repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
