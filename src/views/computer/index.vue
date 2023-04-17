@@ -242,25 +242,25 @@ export default {
       else dropDetailHeight.value=0
     }
     const task=[
-      {name:'檢視系統資訊',img:'/image/windows_xp_icon/explorer_properties.png'},
-      {name:'新增或移除程式',img:'/image/windows_xp_icon/programs.png'},
-      {name:'變更設置',img:'/image/windows_xp_icon/control_panel.png'},
+      {name:'檢視系統資訊',img:new URL('/image/windows_xp_icon/explorer_properties.png')},
+      {name:'新增或移除程式',img:new URL('/image/windows_xp_icon/programs.png')},
+      {name:'變更設置',img:new URL('/image/windows_xp_icon/control_panel.png')},
     ]
     const address=[
-      {name:'網路上的芳鄰',img:'/image/windows_xp_icon/network.png'},
-      {name:'我的文件',img:'/image/windows_xp_icon/my_file.png'},
-      {name:'共享文件',img:'/image/windows_xp_icon/file.png'},
-      {name:'控制台',img:'/image/windows_xp_icon/control_panel.png'},
+      {name:'網路上的芳鄰',img:new URL('/image/windows_xp_icon/network.png')},
+      {name:'我的文件',img:new URL('/image/windows_xp_icon/my_file.png')},
+      {name:'共享文件',img:new URL('/image/windows_xp_icon/file.png')},
+      {name:'控制台',img:new URL('/image/windows_xp_icon/control_panel.png')},
     ]
     const disk=[
-      {name:'本機磁碟(C:)',img:'/image/windows_xp_icon/disk.png'},
-      {name:'DWG(D:)',img:'/image/windows_xp_icon/disk.png'},
-      {name:'本機磁碟(E:)',img:'/image/windows_xp_icon/disk.png'},
-      {name:'本機磁碟(F:)',img:'/image/windows_xp_icon/disk.png'},
+      {name:'本機磁碟(C:)',img:new URL('/image/windows_xp_icon/disk.png')},
+      {name:'DWG(D:)',img:new URL('/image/windows_xp_icon/disk.png')},
+      {name:'本機磁碟(E:)',img:new URL('/image/windows_xp_icon/disk.png')},
+      {name:'本機磁碟(F:)',img:new URL('/image/windows_xp_icon/disk.png')},
     ]
     const saveDisk=[
-      {name:'3.5軟碟機(A:)',img:'/image/windows_xp_icon/floppy_disk.png'},
-      {name:'DVD 驅動器(E:)',img:'/image/windows_xp_icon/DVD.png'},
+      {name:'3.5軟碟機(A:)',img:new URL('/image/windows_xp_icon/floppy_disk.png')},
+      {name:'DVD 驅動器(E:)',img:new URL('/image/windows_xp_icon/DVD.png')},
     ]
     const clickCss=(val,index)=>{
       if(index===0){
