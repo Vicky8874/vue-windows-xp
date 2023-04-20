@@ -26,7 +26,7 @@
 <script setup>
   import {app} from '@/configs/index.js'
   import shutDown from  '@/components/shutDown.vue'
-  import { useCounterStore } from '@/store/index.js'
+  import {useCounterStore} from '@/store/index.js'
   const {storeTaskbarApp,storeDesktopApp,sortIndex,daggle} = useCounterStore()
   const store=useCounterStore()
   const display=(id,className)=>{
