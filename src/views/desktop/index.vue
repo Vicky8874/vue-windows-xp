@@ -17,10 +17,10 @@
         <component :is="item.component" />
       </div>
     </div>
+    <teleport to="body">
+      <shutDown class="absolute ml-[-200px] mt-[-145px] top-[50%] left-[50%]" v-if="store.shutDownStatus" @close="shutDownDisplayAction()" />
+    </teleport>
   </div>
-  <Teleport to="body">
-    <shutDown class="absolute ml-[-200px] mt-[-145px] top-[50%] left-[50%]" v-if="store.shutDownStatus" @close="shutDownDisplayAction()" />
-  </Teleport>
 </template>
 
 <script setup>

@@ -2,7 +2,7 @@ import minesweeper from '@/views/minesweeper/index.vue'
 import computer from '@/views/computer/index.vue'
 import about from '@/components/help/about.vue'
 import trush from '@/views/trush/index.vue'
-import iexplore from '@/views/iexplore/index.vue'
+// import iexplore from '@/views/iexplore/index.vue'
 import file from '@/views/file/index.vue'
 import picture from '@/views/picture/index.vue'
 import music from '@/views/music/index.vue'
@@ -13,7 +13,7 @@ export const app=[
   {id:1,desktop:true,zIndex:0,className:'minesweeper',component:minesweeper,name:'踩地雷',display:false,img:new URL('/image/windows_desktop/bomb.webp',import.meta.url)},
   {id:2,desktop:true,zIndex:0,className:'computer',component:computer,name:'我的電腦',display:false,img:new URL('/image/windows_desktop/computer.png',import.meta.url)},
   {id:3,desktop:true,zIndex:0,className:'trush',component:trush,name:'垃圾桶',display:false,img:new URL('/image/windows_desktop/trush.png',import.meta.url)},
-  {id:4,desktop:true,zIndex:0,className:'iexplore',component:iexplore,name:'Internet Explorer',display:false,img:new URL('/image/windows_desktop/iexplore.png',import.meta.url)},
+  // {id:4,desktop:true,zIndex:0,className:'iexplore',component:iexplore,name:'Internet Explorer',display:false,img:new URL('/image/windows_desktop/iexplore.png',import.meta.url)},
 ]
 export const start_right=[
   {id:5,desktop:false,zIndex:0,className:'file',component:file,name:'我的文件',display:false,img:new URL('/image/windows_desktop/file.png',import.meta.url)},

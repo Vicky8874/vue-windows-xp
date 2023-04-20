@@ -43,8 +43,8 @@ const emit = defineEmits(['close'])
 const shutDown=()=>{
   if (confirm("Do you want to close this window?")) {
     window.opener=null
-    window.open('','_self')
-    window.close()
+    open(location, '_self').close()
+    // window.close()
   }
 }
 </script>
