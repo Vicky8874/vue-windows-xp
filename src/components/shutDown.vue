@@ -44,7 +44,6 @@ const shutDown=()=>{
   if (confirm("Do you want to close this window?")) {
     window.opener=null
     open(location, '_self').close()
-    // window.close()
   }
 }
 </script>
